@@ -56,3 +56,7 @@ The second risk occurs when ransomware encrypts the core production database.The
  
  META Decision: Mitigate
  Action Plan: Automated off-site backups to be made immutable, administrator access to be restricted, Multi Factor Authentication (MFA) to be enabled at all accesses points for employees, periodic tests for downgraded restorations to be performed offline.
+
+References
+ Course Material:Karvinen 2026: Cyber Security (https://terokarvinen.com/cyber-security/)
+ JUFO Portal: Julkaisufoorumi Publication Search (https://jfp.csc.fi/jufoportal)
