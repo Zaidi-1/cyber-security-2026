@@ -1,0 +1,45 @@
+a) Podcast Summary
+
+- Podcast: Darknet Diaries
+- Episode: EP 161: MG
+- Link: https://darknetdiaries.com/transcript/161/
+
+ Summary Bullets:
+ Background: A hardware hacker and security engineer, MG is a household name known for creating the O.Background: A hardware hacker and security engineer, MG is a household name who has invented the O.A piece of malicious software disguised as a common commercial USB charging cable, called MG Cable.
+ The Mechanism: The custom cable appears and operates as a regular phone charger, but has hidden implants that can perform keystroke injections, log keystrokes, and run automated scripts remotely to create a compromise on target systems or air-gapped forensic terminals.
+ Security implications: The episode emphasizes the extreme dangers posed by supply chain issues and physical hardware Trojans, and demonstrates that trusted peripheral devices can evade typical network and perimeter security measures.
+
+ My Own Thought / Question:
+ Now that charging cables can serve as network-connected entry points, what are the options for modern enterprises and secure buildings to audit or manage the charging equipment of employees?
+
+
+b) Blog Summary
+
+By Bruce Schneier.By Bruce Schneier.
+This is a fantastic study of how to backdoor open-weight AI models.It's a great research paper on backdooring open weight AI models.
+- Author: Bruce Schneier
+- Link: https://www.schneier.com/blog/archives/2026/10/backdooring-open-weight-ai-models.html
+
+ Summary Bullets:
+ Core Subject: Article points to the fact that open-weight versions of AI are vulnerable to being manipulated or backdoored during fine-tuning, merging, or adaptation, creating significant risks in the software supply-chain.
+ Vulnerability: Open weights (or third-party weight) may be programmed to contain malicious behaviors that pass the evaluation benchmarks of the standard in response to certain inputs, but behave differently on those same inputs when they are modified.
+ Security Challenge: Deep neural network weights are probabilistic and opaque, and backdoor detection is very hard for traditional security tools since the logic is not definable or easily testable, unlike traditional source code.
+
+ My Own Thought / Question:
+ Personal Idea/Question: How will organizations be able to rely on trusted third-party models if they are virtually impossible to carefully examine line-by-line as with traditional binaries?
+
+
+c) Science That: Connecting Theory to Practice
+
+According to the IEEE survey by Longtchi et al. (2024), systemic trust and supply chains, as well as hidden manipulation vectors in which source code or perimeter validation is ineffective, are now being heavily used in modern cyber attacks.
+In an October 2026 post titled “Backdooring Open-Weight AI Models,” Bruce Schneider explains how bad actors can add backdoors to open-weight neural networks that are triggered by specific inputs during the fine-tuning process.
+
+ Science That: Connecting Theory to Practice
+ The Supply Chain Parallel: The study conducted by Longtchi et al. points out that digital ecosystems are complex, leading to hidden opportunities for attackers. The same is true with open-weight AI: in the same way that a supply chain of physical devices could be compromised, with an extra-level twist, a supply chain of algorithms may be subverted without anyone knowing.
+ The Problem of Verification: Academic studies show that traditional security walls are based on verifying certain predictable rules or code. However, since the weights of neural networks are probabilistic and not transparent, they can circumvent common software performance metrics. This demonstrates that existing trust structures are completely incompatible with the modern AI parts and introduces the need for cryptographic model provenance and behavioral sandboxing.
+
+ My Own Thought / Question:
+ Personal Idea/Question: Can we devise automated "neural-auditing" tools, mathematically that can show that a model's weights have not been manipulated when the model is not being evaluated by the standard benchmarks?
+
+d) Downloaded Debian 13-Trixie installation image on my PC.
+
