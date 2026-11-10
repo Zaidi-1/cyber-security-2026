@@ -1,0 +1,87 @@
+Read and Summarize
+
+ How to Install Linux to VirtualBox Heinonen 2026
+
+Cyber Lab Setup: Using Linux in a virtual machine allows users to practice and test security tools safely, in a separate environment from the host machine.
+
+Installation Pitfalls: VirtualBox's unattended installation will sometimes fail, but manual configuration using an attached ISO image will allow a reliable configuration. Using sufficient resources (RAM, CPU cores, dynamic virtual disk storage), and enabling hardware virtualization (VT-x) in the host BIOS is crucial.
+
+My Own Idea / Question: If disk allocation for a host is dynamically allocated, does the performance of security tool operations noticeably degrade with heavy disk I/O compared to fixed disk allocation?
+
+
+ Introduction to the Command Line: A Revisitation of Basics, Karvinen 2020.
+
+Any security analyst setting up a lab should know how to use the terminal skills (cd, pwd), file inspection (ls -la, cat, less), and file management.
+
+Best Practices & Safety: Efficiency is enhanced via tab completion and command history. Administrative actions (by default) should be performed as the user `sudo`, not as the user `root` to maintain system integrity.
+
+My Own Idea / Question: What shell logging or audit practices can be set up early in lab that would make it easier to review commands that have been executed when running a lab script fails?
+
+ Verify and Crack Passwords using Hashcat 2022.
+
+Verify and Crack Passwords using Hashcat 2022.
+
+Tool Mechanics: Hashcat is a high-speed password recovery tool which is popular among penetration testers (both white-hat and black-hat), and is used to test the strength of credentials using CPU/GPU.
+
+Try-First Philosophy: Works in concert with the course's practical hands-on experience of testing real tools before formal theory is provided, employing wordlists (such as rockyou.txt) and hash mode flags (-m).
+
+My Own Idea / Question: How do modern password hashing algorithms (such as Argon2 or bcrypt) effectively negate the monumental efficiency boost that attackers can enjoy using GPU-powered password cracking tools, like Hashcat?
+
+
+Sources
+Article 1: Heinonen, J. (2026). How to Install Linux to VirtualBox. GitHub Repository.
+
+Article 2: Karvinen, T. (2020). Command Line Basics Revisited. TeroKarvinen.com.
+
+Article 3: Karvinen, T. (2022). Cracking Passwords with Hashcat. TeroKarvinen.com.
+
+Assignment: Tero Karvinen, Cyber Security — H3 Cyber Lab ([https://terokarvinen.com/cyber-security/](https://terokarvinen.com/cyber-security/)).
+
+AI assistance (Gemini): Used to structure Markdown summaries and refine personal reflections. All readings reviewed independently.
+
+
+
+
+a) Presentation Title Reservation
+
+Reservation Date: Week 47 (Wednesday, 2026-11-18)
+Session Theme: 5. To identify, authenticate and implement hashes
+Reserved Title: Passkeys & FIDO2: The Death of the Traditional Password
+It is reserved in Laksu as requested.
+
+ Presentation Concept & Outline:
+ The Problem: Passwords are subject to phishing and credential stuffing as well as brute force cracking (see Hashcat).
+ The solution: Passkeys based on the FIDO2/WebAuthn standards and asymmetric public-key cryptography.
+ How it works: A key pair is generated locally (private key is stored in secure hardware/TPM, public key is transmitted to the server); authentication takes place by providing local biometric/PIN confirmation without sharing anything over the network.
+ Security Impact: Phishing resistant and not susceptible to credential leaks on the server.
+
+b) Install Linux on a Virtual Machine (Debian 13-Trixie)
+
+ Environment Specifications
+ Host OS: Windows 11
+ Hypervisor: VirtualBox 7.x
+ Guest OS: Debian 13 (Trixie) Live Xfce (64-bit)
+ Allocated Resources: 2 CPU Cores, 2048 MB RAM, 50 GB Dynamically Allocated Virtual Disk.
+
+ Installation Process & Log
+
+1. Media Acquisition: Downloaded the Debian 13 (Trixie) Live Xfce ISO image (`debian-live-13-amd64-xfce.iso`) from the official Debian mirror.
+2. VM Configuration: Created a new virtual machine in VirtualBox:
+   - Set Type to `Linux` and Version to `Debian (64-bit)`.
+   - Disabled "Unattended Installation" to avoid installation script failures.
+   - Mounted the downloaded ISO file into the virtual optical CD/DVD drive.
+3. Live Desktop & Calamares Installation:
+   - Booted into the live Xfce desktop environment to verify basic hardware compatibility.
+   - Launched the Install Debian installer icon from the desktop.
+   - Configured localization: System Language `American English`, Location `Helsinki`, Keyboard `Generic 105-key PC / Finnish`.
+   - Selected `Erase disk` for automated partitioning on the virtual disk (`/dev/sda`).
+   - Configured initial sudo user and administrative password.
+4. Post-Installation System Update & Verification:
+   - Ejected the installer ISO and restarted the virtual machine.
+   - Opened Terminal (`Ctrl + Alt + T`) and updated system repository indices:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+lsb_release -a
+
+
