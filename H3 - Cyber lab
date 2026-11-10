@@ -84,4 +84,4 @@ b) Install Linux on a Virtual Machine (Debian 13-Trixie)
 sudo apt update && sudo apt upgrade -y
 lsb_release -a
 
-
+d) Crack. Crack the hash 6b1628b016dff46e6fa35684be6acc96 . Installed hashcat and follow the steps in the article to crack the example hash.
