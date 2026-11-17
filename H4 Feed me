@@ -1,0 +1,94 @@
+Part 1: Theory & Legal Background (Tasks x & y)
+
+x) Why use a feed reader (RSS/Atom) rather than just visit each website?
+
+Efficiency & Aggregation: A feed reader gathers all the security blogs' feeds into one "River of News" so that you don't have to visit 10 to 20 blogs every day to see if anything new has been posted.
+
+Unlike social media platforms (X/Twitter, LinkedIn) that use engagement algorithms to hide and reorder posts, RSS takes you all of the posts from your selected sources, and shows them to you exactly as they're posted and published.
+
+Privacy & Distraction-Free Reading: A feed reader retrieves the clean XML text without tracking cookies, advertising or clickbait side bars. Also, it maintains the Read/Unread status.
+
+y) Supreme Court of Finland: Case Osuuspankkikeskus Port Scan (KKO:2003:36)
+
+The Incident: An individual ran a port scan of Osuuspankkikeskus (OP Bank Group) firewall/network to determine if any open ports or vulnerabilities exist, but did not try to gain access to or steal its data.
+
+The Ruling: The Supreme Court has ruled that scanning alone is not an offence (from the point of view of the Finnish criminal law it doesn't constitute attempted computer break-in / tietomurron yritys). Scanning only identifies visible points of entry in the network and doesn't yet penetrate security measures or gain access to protected information.
+
+Although it was not proven in this particular precedent from 2003 that port scanning was an attempted break-in, it is still possible for scanning networks that you do not belong to to trigger an intrusion detection alarm, to break an ISP Terms of Service, or be the subject of a legal investigation, so never scan anything other than localhost (or your own approved lab machines).
+
+Part 2: Feed Reader Setup (Tasks a, b, c, d, e)
+You can do this either inside your Debian 13 VM or on your Windows host. Using Thunderbird is recommended in the tips.
+
+a) Install Thunderbird & Create a Feed Account
+If installing in your Debian 13 terminal:
+Bash
+sudo apt update && sudo apt -y install thunderbird
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20141041.png?raw=true)
+
+Confirmed the version installed 
+(Mozilla Thunderbird 153.7.0esr):   Bashthunderbird --version
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20141334.png?raw=true)
+   
+In Task b) Added Krebs on Security FeedOpened Thunderbird and created a new Feed Account (Blogs & News Feeds) under File -> New -> Feed Account.   When clicked, Blogs & News Feeds was right-clicked, subscribed to, and entered https://krebsonsecurity.com/feed/ and clicked Add.      
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20141610.png?raw=true)
+
+In task c) Navigated to Bruce Schneier's blog and find the Atom feed URL (https://www.schneier.com/feed/atom/).   
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20142519.png?raw=true)
+Subscribed to the URL via Thunderbird's Feed Subscriptions manager and saw that his latest posts loaded.
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20151602.png?raw=true)
+
+Task d) Two more cybersecurity feeds were found and added to Thunderbird:   
+Official Microsoft Security blog (https://www.microsoft.com/en-us/security/blog/feed/): Selected for authoritative threat intelligence and Patch Tuesday vulnerability analysis due to the testing of the standard WordPress /feed/ path.   BleepingComputer (https://www.bleepingcomputer.com/feed/): Selected from the RSS icon/link on their main page for their timely reporting of active malware campaigns, zero-day exploits, and data breaches.
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20151602.png?raw=true)
+
+Task e) Follow Security Feeds & Reflection
+
+ What I Learned from the Feeds
+There were a few themes in the cybersecurity space that surfaced on the collected feeds from Thunderbird on Krebs on Security, Schneier on Security, Microsoft Security, and BleepingComputer:
+- Ransomware & Cybercrime Operations: Krebs on Security focussed on ransomware group leadership investigations, ransom negotiators, and botnet takedowns[cite: 13] and illustrated the cybercrime business ecosystem.
+Patch Management & Enterprise Vulnerabilities were covered by both Krebs and Microsoft Security, as both had reported on massive monthly patch cycles, including Microsoft patching more than a thousand vulnerabilities and PHP having widespread flaws[cite: 13].
+- Cryptography, AI Security, & Privacy: Bruce Schneier's feed featured articles on technical subjects such as the formal verification of the Signal protocol and also on the general topic of AI risks, usable security and digital surveillance[cite: 18].
+
+ Benefits vs. Downsides of Using a Feed Reader
+
+Leverage RSS/Atom feeds or other sources (social media, news sites, newsletters) |
+
+Upstairs: You see posts from trusted sources as they appear in real-time without algorithmic manipulation. | Downside: Algorithmically manipulated posts are shown, outrage/clickbait posts are shown, and irrelevant posts are injected. |
+People benefit: can see headlines quickly without leaving the site; clean text free from tracking cookies, pop-ups and ads.People suffer: have to visit individual sites to see headlines; are overrun with tracking cookies, pop-ups and ads. |
+DISADVANTAGE: If you miss a couple of days, you'll have a lot of items to read in the weekly email newsletters, but only the most significant ones. |
+| Community Context | Downside: Reading occurs in only one direction, and there are no other experts to provide context and review breaking vulnerabilities. | Benefit: Platforms like Mastodon, Reddit, or X support real-time discussion and peer review for breaking vulnerabilities. |
+
+Task f) Port Scanning with Nmap
+
+To understand how external entities map an organization's attack surface, we performed a port scanning exercise inside our isolated Debian 13 virtual machine.
+
+### Step 1: Network Isolation
+I disconnected the virtual machine from the internet and verified the offline status using `ping`.
+```bash
+ping -c 4 8.8.8.8
+
+Baseline Port Scan (No Services Running)
+Ran an aggressive nmap scan against localhost before installing any network daemons.
+sudo nmap -A -v localhost
+
+installed and started the Apache web server daemon locally:
+
+Bash
+sudo apt-get -y install apache2
+sudo systemctl start apache2
+
+With Apache active, re-ran the exact same nmap scan against localhost:
+
+sudo nmap -A -v localhost
+
+Analysis & Results:
+
+Port 80/tcp was successfully identified as open (http).
+
+The -A flag fingerprinted the underlying software version (Apache httpd 2.4.62 ((Debian))) and retrieved the web page title.
+
+How criminals map services: Attackers and automated network scanners (like Shodan, Censys, or automated botnets) continuously probe public IP spaces. When a server responds on exposed ports (e.g., 80 for HTTP, 443 for HTTPS, 22 for SSH), the listening service returns a version banner, which attackers use to identify outdated software and match them with known vulnerabilities (CVEs)
+
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20162556.png?raw=true)
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20162637.png?raw=true)
+![image alt] (https://github.com/Zaidi-1/cyber-security-2026/blob/main/Screenshot%202026-11-17%20162753.png?raw=true)
