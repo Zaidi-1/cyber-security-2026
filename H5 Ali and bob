@@ -1,0 +1,260 @@
+x) Summaries
+The definition of the terms used in this chapter are presented at the start and end of the "Public-Key Algorithms" section of Chapter 1 of Schneier 2015.
+
+Sender and receiver
+
+A sender wishes to send a message to a receiver in a safe way. It must not be readable by an eavesdropper.
+
+Messages and encryption
+
+The message is a plaintext message (also known as cleartext). It can be disguised for security reasons to hide its content, and the result is called "ciphertext. Decryption is the process of converting ciphertext back to plaintext.
+The related terms:
+The art and science of keeping messages secret, which is done by cryptographers.
+Cryptanalysis is the art of deciphering texts, performed by the cryptanalyst.
+Cryptology: Maths of both, which is studied by cryptologists.
+Notation: M (or P) = plaintext, C = ciphertext, E = encryption function, D = decryption function.
+E(M) = C
+D(C) = M
+If the data are encrypted as D(E(M)) = M (always true) then the decryption operation must always recover the original data.
+To the computer, M is simply binary data. C can be equal to M, or larger. It can be smaller with compression, it can't be smaller with encryption alone.
+
+Authentication, integrity and nonrepudiation
+
+In addition to secrecy, cryptography is requested to perform three other tasks:
+Intrusion: No one can assume another identity.
+Integrity: receiver can confirm that the message was not tampered with during transmission.
+Nonrepudiation: No possibility for sender to deny later that he/she sent it.
+These represent the computer versions of common trust documents: a passport, a driver's license.
+
+Algorithms and keys
+
+The function for encrypting and decrypting is a cipher.
+A restricted algorithm keeps its inner workings secret. It is too short today for three reasons:
+Each person should replace their algorithm when an individual leaves or the secret is divulged.
+No standardisation or quality control.
+If a group has not got good cryptographers, they can't tell if their algorithm is secure.
+It is still used in non-sensitive applications.
+Today, cryptography is implemented with a key (K) and the set of possible keys is a keyspace.
+E_K(M) = C
+D_K(C) = M
+D_K(E_K(M)) = M
+Some algorithms require two keys for encryption, K1, and decryption, K2. In that case D_K2(E_K1(M)) = M.
+All the security lies in the key, not in the algorithm's details. The algorithm can be published, studied and manufactured and also an attacker who is aware of the algorithm can not read messages without the key.
+The algorithm and all possible plaintexts, ciphertexts and keys are called a cryptosystem.
+
+Symmetric algorithms
+
+The others are able to calculate each key. In most instances they are identical keys, and in such instances they are also known as secret key, single key or one key algorithms.
+The two parties must agree on the key beforehand and so make it not disclosed. It can be learned by anyone who wants to do it, and they can encrypt and decrypt themselves.
+There are two types:
+Stream ciphers operate on a bit (or byte) by bit.
+Block ciphers operate on blocks of bits. The default size of a block is 64 bits.
+
+Public-key (asymmetric) algorithms
+
+The encryption key is not the same as the decryption key, and the decryption key is not easily derivable from the encryption key.
+The encryption key is public, which means that one can have a stranger encrypt a message. No one else can read it except the person that has the matching key to decrypt it.
+The keys are known as the public key and private key. The book does not use "secret key" for the private key, avoiding the risks of confusing it with symmetric algorithms.
+The positions may be switched. Digital signatures (Section 2.6) are based on encrypting with the private key, and decrypting with the public key.
+
+A few small notes about communications using public-key cryptography from Schneier, Ch. 2.5.Some points about using public-key cryptography for communications, from Schneier, Ch. 2.5.
+
+Safe vs. mailbox analogy
+
+A symmetric algorithm is similar to a safe to which a combination is given. It can be opened with any of the combinations and put things in/out.
+Public-key cryptography was invented by Diffie and Hellman in 1976. The NSA earlier said they knew of the leak but did not provide evidence.
+It is based on two keys; calculating the private key from the public key is difficult.
+The public-key cryptography is like having a mail box. Anybody can put mail in (encrypt with public key), but only the key holder can retrieve it (decrypt it with private key).
+
+Mathematical basis
+
+It is based on trap door one way functions. The easy way is to encrypt, the encryption instructions are the public key.
+Without the secret (private key) it is not easy to decrypt. Using the secret, it is as easy to decrypt as it is to encrypt.
+
+Alice sends a message to Bob.Alice sends a message to Bob (Basic protocol).
+
+Alice and Bob agree to a public key cryptosystem.
+Bob shares his Public key with Alice.
+Alice uses Bob's public key to encrypt her message and sends it to Bob.
+Bob decrypts with his private key.
+This alleviates the key-management issue on symmetric systems. No pre-agreement made and there is no need for a courier.
+Eve has the public key and the ciphertext, but is unable to obtain the message or the private key.
+
+Network version
+
+All users have a key pair, while all public keys are shared in a database.
+Alice looks up Bob's public key, encrypts, and sends the message. Bob is only required to act when he decides to read it just like in the case of ordinary mail.
+
+Hybrid cryptosystems
+
+In practice public-key algorithms are used to encrypt keys, rather than messages, because:
+Speed: The symmetric algorithms are typically at least 1000 times quicker. Bandwidth requirements continue to rise and this will have significance for many years.
+Chosen-plaintext vulnerability: the encrypting key is known to the attacker, so he can encrypt all the possible plain texts and match them with the cipher text. This is useful if the collection of messages that can be sent is limited, like a dollar amount less than $1,000,000.
+This is not something that is possible with symmetric ciphers as the attacker does not have access to the key to do trial encryptions. It can also be solved by probabilistic encryption (Section 23.15).
+
+Hybrid protocol:
+Bob gives Alice his public key.
+Alice chooses a random session key K, encrypts it with Bob's public key and sends it (E_B(K)).
+Bob is able to decrypt it using his private key to retrieve K.
+They both use a symmetric algorithm, K, for all subsequent traffic.
+The session key is only available during use and is destroyed after use, thus minimising the chance of the session key being compromised.
+The private key is also used only once per communication, which means that it is less risky.
+It mentions the early competition between public-key cryptography and the NSA standard, DES.
+
+Merkle's puzzles
+
+Ralph Merkle invented the first construction of public-key cryptography in 1974, as a Berkeley student. The idea his professor had wasn't understood, and he withdrew from the class.
+The concept lies on "puzzles" which are easier for legitimate parties than for an eavesdropper:
+Bob generates roughly 2²⁰ (one million) messages each of which has a puzzle number x and a secret key y. He encrypts each one with a different 20-bit key and sends all these to Alice.
+Alice takes one out of the hat at random and does brute force on it – it's a large but manageable number of operations.
+Alice uses the key she has recovered to encrypt her message and sends it to Bob together with x.
+Bob is able to decrypt because he knows which key y corresponds to which puzzle x.
+The puzzles have to be brute-forcely solved by Eve, which takes approximately 2⁴⁰ work. The X's don't help her either, as they are randomly assigned.
+The benefit is approximately 'n compared to n²'. This is not a lot by cryptographic criteria, but there are situations where it will be adequate.
+To see how long it would take Bob and Alice to do the same task with similar resources, the example suggests about one minute, while Eve with similar resources would be about a year.
+This keeps the following items in mind:
+Goal: Alice sends Tero a message that is both encrypted and signed, using gpg. Alice is simulated in a separate folder using gpg --homedir …
+
+One-time trust setup:
+Both parties create their own keypair using gpg --gen-key.
+Both export their public key using gpg --export --armor --output <file> and this results in a printable ASCII encoding of the public key.
+The other party imports with gpg --import.
+They use a separate means of communication (e.g. phone call) to compare fingerprints (gpg --fingerprint).
+They sign the verified key using gpg --sign-key, and then it has "full" trust.
+Encrypting a message: gpg --encrypt --recipient <email> --sign --armor --output encrypted.pgp message.txt.
+It is encrypted using Tero's public key so it can only be read by Tero.
+It's encrypted with Alice's private key, which allows Tero to confirm that it's coming from Alice.
+Decrypted.pgp is decrypted with the private key; gpg --decrypt encrypted.pgp. If the signature is good, it also returns "Good signature from Alice [full]"
+
+Main lessons:
+Public keys can be sent across an untrusted network, but need to be verified.
+Private keys are kept confidential. If a key has been compromised due to leakage, it should be deleted from all uses.
+Encryption gives confidentiality. Signing is authentic and integrity.
+
+Troubleshooting:
+If you get an agent_genkey error when trying to run gpg --gen-key, then run killall gpg-agent.
+If you get a "No public key" message, you have not imported the key or entered the wrong fingerprint.
+
+How the readings relate to each other
+It introduces the theory: symmetric vs public-key encryption, and why hybrid systems are used: Schneier 1.1 and 2.5.
+Karvinen demonstrates it in action. PGP is a hybrid system, using public keys to exchange and to sign, and symmetric keys to encrypt the message.
+
+
+a) Today's pubkey: HTTPS / TLS 1.3
+
+Today, I sent Claude a message via the browser and visited websites, this time over HTTPS. HTTPS is a type of more secure HTTP, known as HTTP/TLS or HTTP Secure. The goal TLS is to ensure that eavesdropping, tampering at the client and server applets and/or message forgery cannot be easily achieved. Modern browsers normally use TLS 1.3, which is specified in RFC 8446. 
+ietf
+
+How parties will be using keys in each step
+
+The parties are the following: my browser (client), the web server, and a certificate authority (CA).
+
+1 When even, the count increases by 1.1: If even, increase the count by 1.
+0. The owner of the server has a key pair. A CA signs a certificate which is a binding of the server's public key to its domain name.	Private key of the server is not revealed. CA: Signs the certificate using the private key of the CA. Browser/OS: already contains the CA's public key in its Trust Store.
+ClientHello	Browser initiates communication and sends list of algorithms supported and a new ephemeral public key (key share).	Browser: Create temporary (ephemeral) key pair and send only the public key.
+The server selects the algorithms and responds with its own ephemeral public key: 2. ServerHello	The server chooses the algorithms and responds with its ephemeral public key.	Server: generates and sends its public key.
+3. Shared secret	Both parties calculate the shared secret together (ECDHE, Diffie-Hellman key exchange). It is used to create handshake keys.	Both: use their own ephemeral private key as well as the other's ephemeral public key. An eavesdropper is able to see both the public values but is not able to do the secret computation.
+4. Certificate	Server sends its certificate.	Browser: verifies the signature of the CA with the public key of the CA, and verifies the domain name.
+5. CertificateVerify, Server signs a hash of the handshake so far.	Server signs with its long-term private key. Browser: checks with the public key in certificate, which indicates that the server is the owner of the key and not the man-in-the-middle.
+6. Finished	Both sides agree to the handshake by using a MAC calculated with the derived keys.	Both: employ symmetric keys based on the common secret.
+7. Data is encrypted; both the page and my messages.	Both: use symmetric session keys and a fast cipher (e.g. AES-GCM).
+
+Refer to the course reading: This is a hybrid system (like in Schneier 2.5). The actual data is encrypted using symmetric encryption, while the keys are shared using public-key cryptography and used to authenticate users (signatures).
+
+Role of each key type.
+
+Public key: key of the server certificate to verify the signature of the server, ephemeral public key: public keys are fed into the key agreement.
+Private key: the long term key of the server is used to sign the handshake. The ephemeral private keys are only used to agree on a key and then destroyed.
+TLS 1.3 does not support RSA key transport, and requires forward security. Later leaking of the server's private key won't decrypt old traffic, since the session keys are generated from ephemeral keys. 
+github
+
+Security takeaway: An attacker on the same Wi-Fi is only able to see encrypted data. The problem with a fake server is that it cannot pass the signature check without the possession of the private key of the real server, unless a CA is compromised or fooled to issue a bad certificate.
+
+b) I have attached sceenshots for encription the problem I was facing and need to discuss it in the class.
+
+c) Password management
+
+Install and check
+
+bash
+sudo apt-get install -y pass
+pass --version
+
+2. Initialize the store with Alice's GPG key from part b
+
+bash
+pass init "alice@example.com.invalid"
+
+This creates ~/.password-store. Your own generated key has "ultimate" trust, which pass requires.
+
+3. Add a generated password (shows the generator)
+
+bash
+pass generate demo/example.com 20
+
+4. Add a password manually
+
+bash
+pass insert demo/mail-demo
+
+5. List and retrieve
+
+bash
+pass ls
+pass show demo/example.com
+
+The GPG passphrase prompt appears when you retrieve. That prompt is your demonstration of the master secret.
+
+6. Edit an entry (add a username line)
+
+bash
+pass edit demo/mail-demo
+
+7. Show that the files really are encrypted
+
+bash
+ls -R ~/.password-store
+cat ~/.password-store/demo/example.com.gpg | head -c 100
+gpg --list-packets ~/.password-store/demo/example.com.gpg | head -20
+
+The .gpg file is unreadable, and the packet listing shows it is encrypted to Alice's public key.
+
+8. Optional: version history with git
+
+bash
+pass git init
+pass git log
+
+9. Optional: remove a test entry
+
+bash
+pass rm demo/mail-demo
+
+How it applies public-key cryptography.How it applies the public-key cryptography.
+The store is now bound to my GPG public key on pass init.
+To add or create a password encrypts that entry using my public key (as outlined in Schneier 2.5).
+To read a password I need my private key, which is unlocked with my passphrase using gpg-agent.
+I am able to recall a single strong passphrase and all sites have a different random password.
+Attacks that exploit people who don't use password managers
+
+When people don't have a manager to help them, they will use the same password, make a memorable and guessable password, and manually enter the password into a page.
+
+Attacks that exploit people who don't use password managers
+
+Without a manager, people tend to reuse passwords, choose memorable and guessable ones, and type them into pages by hand.
+
+Real-world evidence: Performs examples of passwords that have been stolen from one service and used in another (Sony, Yahoo, Dropbox), and points to a set of data that found two-thirds of users in both Sony's and Gawker's breaches had been the same in both. 
+owasp
+
+Restrictions and assessment of security
+Using a password manager is not foolproof. OWASP identifies multi factor authentication as the greatest protection against most password attacks, such as credential stuffing and password spraying. Utilize MFA in combination with a manager. 
+owasp
+The whole store relies on the GPG private key and its passphrase. It is defeated by a weak passphrase or by malware being loaded onto the computer.
+pass file names are "readable", since the site name is the file name. This leaks the services you use, despite the contents being encrypted.
+If you copy a clipboard with pass -c then it will show the password for a short period of time before disappearing.
+You are responsible for backing up your GPG key because otherwise you will lose access to all of it.
+
+Sources
+OWASP, Credential stuffing and Credential Stuffing Prevention Cheat Sheet
+OWASP Top 10 2025, A07 Authentication Failures
+passwordstore.org and pass on Wikipedia
